@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate automation readiness scores for business processes based on volume, variance, data quality, and other key factors.">
+    <meta name="theme-color" content="#007bff">
+    <title>Automation Readiness Score Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <main>
+        <h1>Automation Readiness Score</h1>
+
+        <div class="app-container">
+            <!-- Inputs Section -->
+            <section class="inputs-section">
+                <h2>Inputs</h2>
+                <form id="readiness-form" novalidate>
+                    
+                    <div class="form-group">
+                        <label for="processVolume">
+                            Process Volume (Monthly)
+                            <button type="button" class="help-icon" aria-label="Help for Process Volume" data-tooltip="Number of cases or transactions processed per month. Higher volume increases automation ROI.">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="processVolume" 
+                            name="processVolume" 
+                            min="0" 
+                            step="1" 
+                            value="1000" 
+                            required 
+                            aria-describedby="help-pv error-pv"
+                        >
+                        <small id="help-pv">Number of cases or transactions per month.</small>
+                        <small id="error-pv" class="error-message" role="alert"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="variance">
+                            Process Variance (0–100)
+                            <button type="button" class="help-icon" aria-label="Help for Process Variance" data-tooltip="How inconsistent is the process? 0 = very stable and predictable, 100 = highly variable with many edge cases.">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="variance" 
+                            name="variance" 
+                            min="0" 
+                            max="100" 
+                            value="20" 
+                            required 
+                            aria-describedby="help-var error-var"
+                        >
+                        <small id="help-var">How inconsistent is the process? 0 = very stable, 100 = very inconsistent.</small>
+                        <small id="error-var" class="error-message" role="alert"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exceptionRate">
+                            Exception Rate (0–100%)
+                            <button type="button" class="help-icon" aria-label="Help for Exception Rate" data-tooltip="Percentage of items that need manual handling, rework, or special processing. Lower is better for automation.">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="exceptionRate" 
+                            name="exceptionRate" 
+                            min="0" 
+                            max="100" 
+                            value="10" 
+                            required 
+                            aria-describedby="help-ex error-ex"
+                        >
+                        <small id="help-ex">Percentage of items needing manual handling or rework.</small>
+                        <small id="error-ex" class="error-message" role="alert"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dataQuality">
+                            Data Quality (0–100)
+                            <button type="button" class="help-icon" aria-label="Help for Data Quality" data-tooltip="Is input data structured, clean, and complete? 100 = excellent quality with consistent formats and minimal errors.">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="dataQuality" 
+                            name="dataQuality" 
+                            min="0" 
+                            max="100" 
+                            value="70" 
+                            required 
+                            aria-describedby="help-dq error-dq"
+                        >
+                        <small id="help-dq">Is input data structured, clean, and complete? 100 = excellent.</small>
+                        <small id="error-dq" class="error-message" role="alert"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="systemAccess">
+                            System Access (0–100)
+                            <button type="button" class="help-icon" aria-label="Help for System Access" data-tooltip="How easily can bots/APIs access systems? 100 = stable APIs with service accounts, no MFA. 0 = locked down systems requiring complex workarounds.">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="systemAccess" 
+                            name="systemAccess" 
+                            min="0" 
+                            max="100" 
+                            value="60" 
+                            required 
+                            aria-describedby="help-sa error-sa"
+                        >
+                        <small id="help-sa">How easily can bots/APIs access systems? 100 = stable APIs, no MFA.</small>
+                        <small id="error-sa" class="error-message" role="alert"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="complianceSensitivity">
+                            Compliance Sensitivity (0–100)
+                            <button type="button" class="help-icon" aria-label="Help for Compliance Sensitivity" data-tooltip="Regulatory/audit burden. 0 = no compliance requirements, 100 = highly sensitive (HIPAA, GDPR, SOX) with strict audit trails.">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="complianceSensitivity" 
+                            name="complianceSensitivity" 
+                            min="0" 
+                            max="100" 
+                            value="30" 
+                            required 
+                            aria-describedby="help-comp error-comp"
+                        >
+                        <small id="help-comp">Regulatory/audit burden. 0 = none, 100 = highly sensitive (HIPAA, GDPR).</small>
+                        <small id="error-comp" class="error-message" role="alert"></small>
+                    </div>
+
+                    <div class="form-group actions">
+                        <button type="button" id="btn-copy" title="Copy results as JSON">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                            </svg>
+                            Copy JSON
+                        </button>
+                        <button type="button" id="btn-csv" title="Download results as CSV">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                            </svg>
+                            Download CSV
+                        </button>
+                        <button type="button" id="btn-share" title="Copy shareable link">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                                <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                            </svg>
+                            Share Link
+                        </button>
+                        <button type="reset" id="btn-reset" title="Reset to default values">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                            </svg>
+                            Reset
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section class="outputs-section" aria-live="polite" aria-atomic="true">
+                <h2>Results</h2>
+                <div id="output-card">
+                    <div class="score-display">
+                        <div class="score-container">
+                            <span id="score-value" aria-label="Readiness score">...</span>
+                            <canvas id="score-gauge" width="200" height="100" aria-hidden="true"></canvas>
+                        </div>
+                        <span id="score-band" class="" role="status">...</span>
+                    </div>
+                    <p id="score-narrative">Enter values to calculate readiness score.</p>
+                    
+                    <div id="blockers-section">
+                        <h3>Top Blockers to Address</h3>
+                        <ul id="blockers-list" role="list">
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Tooltip container -->
+    <div id="tooltip" role="tooltip" class="tooltip"></div>
+
+    <script src="app.js" type="module"></script>
+</body>
+</html>
